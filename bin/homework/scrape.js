@@ -7,7 +7,7 @@ if (!fs.existsSync("cache")) {
   fs.mkdirSync("cache");
 }
 
-for (let i = 899; i <= 899; i++) {
+for (let i = 1; i <= 900; i++) {
   let cacheName = `cache/${i}.html`;
   let data;
   if (!fs.existsSync(cacheName)) {
@@ -19,21 +19,23 @@ for (let i = 899; i <= 899; i++) {
     data = fs.readFileSync(cacheName);
   }
   const $ = cheerio.load(data);
-  console.log(`Comic nr ${i}`);
 
   let img = $(`#comic>img`);
+  const imglength = img.length;
+  let next = img
 
-  console.log(img.length);
+  console.log(`\n`)
+  console.log(`\u001B[32mComic length: ${img.length}\u001B[0m`);
+  console.log(`\u001b[38;2;253;182;0mComic nr ${i}\u001B[0m`);
 
-  for (let i = 0; i <= img.length; i++) {
-    console.log(i);
-    if (img.attr("src") !== undefined) {
-      console.log(img.attr("src"));
-      img = img.next();
+
+  //Kood on pikem kuna hiljem hakkab tulema koomikseid millel mitmeid pilte. Pidin lisama loopi et kõik koomiksi pildid kätte saada.
+  for (let i = 0; i < imglength; i++) {
+    if (next.attr("src") !== undefined) {
+      console.log(next.attr("src"));
+      next = next.nextUntil('img').next();
     } else {
-      img = img.next();
-      console.log(img.attr("src"));
-      img = img.next();
+      console.log("No image found");
     }
   }
 }
